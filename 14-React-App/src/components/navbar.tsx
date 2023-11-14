@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <header className="w-full sticky top-0 bg-white/90 z-50">
       <nav className="mx-auto flex container items-center justify-between p-6">
-        <p>Library App</p>
+        <p className="font-bold text-3xl">LibraryApp</p>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar>

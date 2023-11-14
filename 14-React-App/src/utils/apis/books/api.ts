@@ -1,20 +1,30 @@
 import { Response, PayloadPagination } from "@/utils/types/api";
-import { booksSampleData, Book } from ".";
+import { Book } from ".";
+import axiosWithConfig from "../axiosWithConfig";
 
 export const getBooks = async () => {
-  return new Promise<Response<PayloadPagination<Book[]>>>((resolve) => {
-    setTimeout(() => {
-      const response: Response<PayloadPagination<Book[]>> = {
-        message: "",
-        payload: {
-          totalItems: 3,
-          datas: booksSampleData,
-          totalPages: 1,
-          currentPage: 1,
-        },
-      };
+  try {
+    const response = await axiosWithConfig.get(
+      "https://hells-kitchen.onrender.com/api/v1/books"
+    );
 
-      resolve(response);
-    }, 1000);
-  });
+    return response.data as Response<PayloadPagination<Book[]>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw Error(error.response.data.message);
+  }
+};
+
+
+export const getDetailBooks = async (id_book: string) => {
+  try {
+    const response = await axiosWithConfig.get(
+      `https://hells-kitchen.onrender.com/api/v1/books/${id_book}`
+    );
+
+    return response.data as Response<Book>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    throw Error(error.response.data.message);
+  }
 };

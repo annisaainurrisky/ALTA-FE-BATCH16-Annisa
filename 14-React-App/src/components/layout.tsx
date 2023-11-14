@@ -1,24 +1,25 @@
-import { ReactNode } from "react"
-import Navbar from "./navbar"
-import Footer from "./footer"
-
+import { Toaster } from "@/components/ui/toaster";
+import { ReactNode } from "react";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 interface Props {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const Layout = (props: Readonly<Props>) => {
-  const { children } = props
+  const { children } = props;
 
   return (
-    <div className='w-full h-screen bg-white font-roboto flex flex-col overflow-auto'>
+    <div className="w-full h-screen bg-white font-roboto flex flex-col overflow-auto">
       <Navbar />
       <div className="container grow mx-auto py-4 px-8 flex flex-col">
         {children}
       </div>
+      <Toaster />
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
