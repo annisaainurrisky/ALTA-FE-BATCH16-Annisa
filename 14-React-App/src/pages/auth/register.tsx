@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { registerAccount } from "@/utils/apis/auth";
 
 const register = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const [fullName, setFullName] = useState("");
@@ -30,6 +32,7 @@ const register = () => {
       toast({
         description: result.message,
       });
+      navigate("/login");
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",

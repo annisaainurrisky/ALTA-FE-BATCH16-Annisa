@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { loginAccount } from "@/utils/apis/auth/api";
 import { FormEvent, useState } from "react";
 
 const login = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const [email, setEmail] = useState("");
@@ -21,20 +22,20 @@ const login = () => {
       };
 
       const result = await loginAccount(body);
-      localStorage.setItem("token", result.payload.token)
+      localStorage.setItem("token", result.payload.token);
       toast({
         description: result.message,
       });
-      console.log('success')
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",
         description: error.toString(),
         variant: "destructive",
       });
-      console.log('error')
     }
   }
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -74,7 +75,7 @@ const login = () => {
           </form>
           <div className="text-center text-gray-400">
             <p>
-              Dont' have an account? {' '}
+              Dont' have an account?{" "}
               <span className="font-bold text-black">Register for free</span>
             </p>
           </div>

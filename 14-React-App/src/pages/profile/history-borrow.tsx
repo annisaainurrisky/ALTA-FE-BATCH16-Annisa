@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import Layout from "@/components/layout";
-// import TableData from "@/components/table";
+
 import { getHistory } from "@/utils/apis/history/api";
 import { History } from "@/utils/apis/history";
+import { formatDate } from "@/utils/utils";
 
 import {
   Table,
@@ -20,7 +21,6 @@ const BorrowHistory = () => {
   const { toast } = useToast();
 
   const [history, setHistory] = useState<History[]>([]);
-
 
   useEffect(() => {
     historyBorrow();
@@ -42,20 +42,8 @@ const BorrowHistory = () => {
 
   return (
     <Layout>
-      {/* {history.map((history) => (
-        <TableData
-          key={history?.id}
-          id={history?.id}
-          borrow_date={history?.borrow_date}
-          due_date={history?.due_date}
-          return_date={null}
-          title={history?.title}
-          full_name={history?.full_name}
-        />
-      ))} */}
-
       <Table>
-        <TableCaption></TableCaption>
+        <TableCaption>A list of your borrowed books.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">No</TableHead>
@@ -70,10 +58,10 @@ const BorrowHistory = () => {
           {history.map((history) => (
             <TableRow>
               <TableCell>{history?.id}</TableCell>
-              <TableCell>{history?.full_name}</TableCell>
-              <TableCell>{history?.title}</TableCell>
-              <TableCell>{history?.borrow_date}</TableCell>
-              <TableCell>{history?.due_date}</TableCell>
+              <TableCell>{history?.user.full_name}</TableCell>
+              <TableCell>{history?.book.title}</TableCell>
+              <TableCell>{formatDate(history?.borrow_date)}</TableCell>
+              <TableCell>{formatDate(history?.due_date)}</TableCell>
               <TableCell>{history?.return_date}</TableCell>
             </TableRow>
           ))}

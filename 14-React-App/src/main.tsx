@@ -1,10 +1,9 @@
+import ReactDOM from "react-dom/client";
+import App from "./routes";
+import "./styles/index.css";
 
-import ReactDOM from 'react-dom/client'
-import App from './pages/profile/history-borrow'
-import './styles/index.css'
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
     <App />
-  </>,
-)
+  </>
+);
