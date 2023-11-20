@@ -1,34 +1,40 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate } from "react-router-dom";
-import { FormEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { Form } from "@/components/ui/form";
+import { CustomFormField } from "@/components/custom-formfield";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { registerAccount } from "@/utils/apis/auth";
+
+import {
+  registerAccount,
+  RegisterSchema,
+  registerSchema,
+} from "@/utils/apis/auth";
 
 const register = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const form = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      full_name: "",
+      email: "",
+      password: "",
+      repassword: "",
+      address: "",
+      phone_number: "",
+    },
+  });
 
-  async function onSubmitRegister(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  async function onSubmitRegister(data: RegisterSchema) {
     try {
-      const body = {
-        full_name: fullName,
-        email,
-        password,
-        role: "user",
-        address,
-        phone_number: phoneNumber,
-      };
-
-      const result = await registerAccount(body);
+      const result = await registerAccount(data);
       toast({
         description: result.message,
       });
@@ -47,71 +53,112 @@ const register = () => {
       <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
         <div className="flex flex-col justify-center p-8 md:p-16">
           <h1 className="font-bold text-2xl text-center mb-5">Register</h1>
-          <form onSubmit={(e) => onSubmitRegister(e)}>
-            <div className="py-2">
-              <h3 className="mb-2">Full Name</h3>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
-                name="fullname"
-                id="fullname"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
-            </div>
-            <div className="py-2">
-              <h3 className="mb-2">Email</h3>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
-                type="email"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmitRegister)}>
+              <CustomFormField
+                control={form.control}
+                name="full_name"
+                label="Full Name">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="John Doe"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
                 name="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="py-2">
-              <h3 className="mb-2">Password</h3>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
-                type="password"
+                label="Email">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="name@mail.com"
+                    type="email"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
                 name="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="py-2">
-              <h3 className="mb-2">Address</h3>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
+                label="Password">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="Password"
+                    type="password"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="repassword"
+                label="Retype Password">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="Retype Password"
+                    type="password"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
                 name="address"
-                id="address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <div className="py-2">
-              <h3 className="mb-2">Phone Number</h3>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
-                name="number"
-                id="number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-            </div>
-            <div className="py-3">
-              <button
-                className="w-full font-semibold bg-black text-white p-2 rounded-xl mb-6 hover:bg-slate-300 hover:text-black hover:border hover:border-gray-300"
-                type="submit">
-                Register
-              </button>
-            </div>
-          </form>
+                label="Address">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="Address"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="phone_number"
+                label="Phone Number">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="Phone Number"
+                    type="tel"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <Button
+                className="w-[300px] my-3"
+                type="submit"
+                disabled={form.formState.isSubmitted}
+                aria-disabled={form.formState.isSubmitted}>
+                {form.formState.isSubmitted ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </>
+                ) : (
+                  "Register"
+                )}
+              </Button>
+            </form>
+          </Form>
           <div className="text-center text-gray-400">
             <p>
               Already have an account?{" "}
-              <span className="font-bold text-black">Login here</span>
+              <span className="font-bold text-black">
+                <Link to={"/login"}>Login here</Link>
+              </span>
             </p>
           </div>
         </div>

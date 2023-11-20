@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response } from "@/utils/types/api";
 import axiosWithConfig from "../axiosWithConfig";
-import { LoginSchema, RegisterSchema } from ".";
+import { BorrowSchema, BorrowPayload } from ".";
 
-export const loginAccount = async (body: LoginSchema) => {
+export const editBorrow = async (body: BorrowPayload) => {
   try {
     const response = await axiosWithConfig.post(
-      "https://hells-kitchen.onrender.com/api/v1/login",
+      "https://hells-kitchen.onrender.com/api/v1/borrows/:id_borrow",
       body
     );
 
@@ -16,11 +16,10 @@ export const loginAccount = async (body: LoginSchema) => {
   }
 };
 
-export const registerAccount = async (body: RegisterSchema) => {
+export const deleteBorrow = async () => {
   try {
-    const response = await axiosWithConfig.post(
-      "https://hells-kitchen.onrender.com/api/v1/register",
-      body
+    const response = await axiosWithConfig.delete(
+      "https://hells-kitchen.onrender.com/api/v1/borrows/:id_borrow"
     );
 
     return response.data as Response;

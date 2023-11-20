@@ -9,6 +9,7 @@ import DetailBookPage from "@/pages/books/detail";
 import ProfilePage from "@/pages/profile";
 import EditProfilePage from "@/pages/profile/edit-profile";
 import BorrowHistoryPage from "@/pages/profile/history-borrow";
+import Dashboard from "@/pages/admin";
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -42,6 +43,10 @@ export default function Router() {
         {
           path: "/history-borrow",
           element: <BorrowHistoryPage />,
+        },
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
         },
         {
           path: "*",

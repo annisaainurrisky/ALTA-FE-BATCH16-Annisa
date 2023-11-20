@@ -5,7 +5,7 @@ import twitter from '../assets/twitter.svg'
 
 const Footer = () => {
   return (
-    <footer className="w-full min-h-[30vh] bg-white">
+    <footer className="w-full min-h-[30vh] bg-white dark:bg-black">
       <div className="flex flex-col items-center container p-6 h-full gap-2">
         <p className="text-2xl font-bold">Library App</p>
         <p className="text-slate-500">LibraryApp is a social media-based digital library application equipped with an eReader for reading ebooks.</p>

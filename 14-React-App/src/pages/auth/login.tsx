@@ -1,28 +1,35 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { loginAccount } from "@/utils/apis/auth/api";
-import { FormEvent, useState } from "react";
+import { loginSchema, LoginSchema } from "@/utils/apis/auth";
+import { Form } from "@/components/ui/form";
+import { CustomFormField } from "@/components/custom-formfield";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { useToken } from "@/utils/contexts/token";
 
 const login = () => {
+  const { changeToken } = useToken();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const form = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  async function handleLogin(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  async function onSubmitLogin(data: LoginSchema) {
     try {
-      const body = {
-        email,
-        password,
-      };
-
-      const result = await loginAccount(body);
-      localStorage.setItem("token", result.payload.token);
+      const result = await loginAccount(data);
+      changeToken(result.payload.token);
       toast({
         description: result.message,
       });
@@ -35,48 +42,64 @@ const login = () => {
       });
     }
   }
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
         <div className="flex flex-col justify-center p-8 md:p-14">
           <h1 className="font-bold text-2xl text-center mb-5">Welcome Back!</h1>
-          <form onSubmit={(e) => handleLogin(e)}>
-            <div className="py-2">
-              <h3 className="mb-2">Email</h3>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
-                type="email"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmitLogin)}>
+              <CustomFormField
+                control={form.control}
                 name="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="py-2">
-              <h3 className="mb-2">Password</h3>
-              <input
-                className="w-full p-2 border border-gray-300 rounded-lg placeholder:font-light placeholder:text-gray-500"
-                type="password"
+                label="Email">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="name@mail.com"
+                    type="email"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
                 name="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="py-3">
-              <button
-                className="w-full font-semibold bg-black text-white p-2 rounded-xl mb-6 hover:bg-slate-300 hover:text-black hover:border hover:border-gray-300"
-                type="submit">
-                Login
-              </button>
-            </div>
-          </form>
+                label="Password">
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="Password"
+                    type="password"
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <Button
+                className="w-[300px] my-3"
+                type="submit"
+                disabled={form.formState.isSubmitted}
+                aria-disabled={form.formState.isSubmitted}>
+                {form.formState.isSubmitted ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </>
+                ) : (
+                  "Login"
+                )}
+              </Button>
+            </form>
+          </Form>
           <div className="text-center text-gray-400">
             <p>
               Dont' have an account?{" "}
-              <span className="font-bold text-black">Register for free</span>
+              <span className="font-bold text-black">
+                <Link to={"/register"}>Register for free</Link>
+              </span>
             </p>
           </div>
         </div>
@@ -86,3 +109,4 @@ const login = () => {
 };
 
 export default login;
+// 
