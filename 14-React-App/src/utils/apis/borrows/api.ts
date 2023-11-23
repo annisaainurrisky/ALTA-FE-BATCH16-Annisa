@@ -3,12 +3,9 @@ import { Response, PayloadPagination } from "@/utils/types/api";
 import axiosWithConfig from "../axiosWithConfig";
 import { BorrowPayload, Borrow, BorrowSchema } from ".";
 
-
 export const getBorrow = async () => {
   try {
-    const response = await axiosWithConfig.get(
-      "https://hells-kitchen.onrender.com/api/v1/borrows"
-    );
+    const response = await axiosWithConfig.get("/borrows");
     console.log("data", response.data);
     return response.data as Response<PayloadPagination<Borrow[]>>;
   } catch (error: any) {
@@ -16,26 +13,26 @@ export const getBorrow = async () => {
   }
 };
 
-export const editBorrowService = async (body: BorrowPayload, id_borrow: number) => {
+export const editBorrowService = async (
+  body: BorrowPayload,
+  id_borrow: number
+) => {
   try {
     const response = await axiosWithConfig.put(
-      "https://hells-kitchen.onrender.com/api/v1/borrows/" +
-        id_borrow.toString(),
+      "/borrows/" + id_borrow.toString(),
       body
     );
 
     return response.data as Response<{ token: string }>;
   } catch (error: any) {
-    console.log("error:", error.response.data.message)
+    console.log("error:", error.response.data.message);
     throw Error(error.response.data.message);
   }
 };
 
 export const deleteBorrow = async (id_borrow: string) => {
   try {
-    const response = await axiosWithConfig.delete(
-      `https://hells-kitchen.onrender.com/api/v1/borrows/${id_borrow}`
-    );
+    const response = await axiosWithConfig.delete(`/borrows/${id_borrow}`);
 
     return response.data as Response;
   } catch (error: any) {
@@ -45,10 +42,7 @@ export const deleteBorrow = async (id_borrow: string) => {
 
 export const createBorrow = async (body: BorrowSchema) => {
   try {
-    const response = await axiosWithConfig.post(
-      'https://hells-kitchen.onrender.com/api/v1/borrows',
-      body
-    );
+    const response = await axiosWithConfig.post("/borrows", body);
 
     return response.data as Response;
   } catch (error: any) {
