@@ -1,21 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { CustomFormField } from "@/components/custom-formfield";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 
 import Layout from "@/components/layout";
 import { useToast } from "@/components/ui/use-toast";
-import { Profile, getProfile } from "@/utils/apis/users";
+import {
+  ProfileUpdateType,
+  getProfile,
+  profileUpdateSchema,
+} from "@/utils/apis/users";
 import { deleteProfile, updateProfile } from "@/utils/apis/users/api";
 import Alert from "@/components/alert";
 
 const EditProfile = () => {
   const { toast } = useToast();
 
-  const [profile, setProfile] = useState<Partial<Profile>>({
-    full_name: "",
-    email: "",
-    address: "",
-    phone_number: "",
-    password: "",
+  const form = useForm<ProfileUpdateType>({
+    resolver: zodResolver(profileUpdateSchema),
+    defaultValues: {
+      full_name: "",
+      email: "",
+      password: "",
+      address: "",
+      phone_number: "",
+      profile_picture: "",
+    },
   });
 
   useEffect(() => {
@@ -25,7 +39,10 @@ const EditProfile = () => {
   async function fetchData() {
     try {
       const result = await getProfile();
-      setProfile(result.payload);
+      form.setValue("full_name", result.payload.full_name);
+      form.setValue("email", result.payload.email);
+      form.setValue("address", result.payload.address);
+      form.setValue("phone_number", result.payload.phone_number);
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",
@@ -35,16 +52,7 @@ const EditProfile = () => {
     }
   }
 
-  async function handleUpdateProfile(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const body = {
-      full_name: profile?.full_name ?? "",
-      email: profile?.email ?? "",
-      password: profile?.password ?? "",
-      address: profile?.address ?? "",
-      phone_number: profile?.phone_number ?? "",
-    };
-
+  async function handleUpdateProfile(body: ProfileUpdateType) {
     try {
       const result = await updateProfile(body);
       toast({
@@ -76,95 +84,99 @@ const EditProfile = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col items-center gap-4">
-        <form onSubmit={(e) => handleUpdateProfile(e)}>
-          <div className="flex flex-row gap-10">
-            <div className="flex flex-col gap-3">
-              <p className="pt-2 font-semibold text-md">Full Name</p>
-              <p className="pt-5 font-semibold text-md">Email</p>
-              <p className="pt-5 font-semibold text-md">Password</p>
-              <p className="pt-4 font-semibold text-md">Address</p>
-              <p className="pt-4 font-semibold text-md">Phone Number</p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <input
-                className="pl-2 md:pr-[400px] md:pl-3 py-2 border border-gray-300 rounded-xl placeholder:font-light placeholder:text-gray-500"
-                name="fullname"
-                id="fullname"
-                value={profile?.full_name}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, full_name: e.target.value };
-                  })
-                }
-              />
-              <input
-                className="pl-2 md:pr-[400px] md:pl-3 py-2 border border-gray-300 rounded-xl placeholder:font-light placeholder:text-gray-500"
-                type="email"
+      <div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleUpdateProfile)}
+            className="flex flex-col gap-5 w-[600px] justify-center mx-auto">
+            <div className="">
+              <CustomFormField
+                control={form.control}
+                name="full_name"
+                label="Full Name">
+                {(field) => (
+                  <Input
+                    {...field}
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
                 name="email"
-                id="email"
-                value={profile?.email}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, email: e.target.value };
-                  })
-                }
-              />
-              <input
-                className="pl-2 md:pr-[400px] md:pl-3 py-2 border border-gray-300 rounded-xl placeholder:font-light placeholder:text-gray-500"
-                type="password"
+                label="Email">
+                {(field) => (
+                  <Input
+                    {...field}
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
                 name="password"
-                id="password"
-                value={profile?.password}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, password: e.target.value };
-                  })
-                }
-              />
-              <input
-                className="pl-2 md:pr-[400px] md:pl-3 py-2 border border-gray-300 rounded-xl placeholder:font-light placeholder:text-gray-500"
+                label="Password">
+                {(field) => (
+                  <Input
+                    {...field}
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
                 name="address"
-                id="address"
-                value={profile?.address}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, address: e.target.value };
-                  })
-                }
-              />
-              <input
-                className="pl-2 md:pr-[400px] md:pl-3 py-2 border border-gray-300 rounded-xl placeholder:font-light placeholder:text-gray-500"
-                name="number"
-                id="number"
-                value={profile?.phone_number}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, phone_number: e.target.value };
-                  })
-                }
-              />
-            </div>
-          </div>
-          <div className="flex flex-row gap-2 justify-center">
-            <button
-              className="bg-black text-white py-2 px-3 rounded-xl mb-6 hover:bg-slate-300 hover:text-black hover:border hover:border-gray-300 mt-5"
-              type="submit">
-              Submit
-            </button>
-            <Alert
-              title="Are you absolutely sure?"
-              description=" This action cannot be undone. This will permanently delete your account
+                label="Address">
+                {(field) => (
+                  <Input
+                    {...field}
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="phone_number"
+                label="Phone Number">
+                {(field) => (
+                  <Input
+                    {...field}
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="profile_picture"
+                label="Cover Image">
+                {(field) => (
+                  <Input
+                    {...field}
+                    disabled={form.formState.isSubmitted}
+                    aria-disabled={form.formState.isSubmitted}
+                    type="file"
+                    name="image"
+                  />
+                )}
+              </CustomFormField>
+              <div className="mt-3 flex flex-row justify-end gap-1">
+                <Button type="submit">Submit</Button>
+                <Alert
+                  title="Are you absolutely sure?"
+                  description=" This action cannot be undone. This will permanently delete your account
         and remove your data from our servers."
-              onAction={() => handleDeleteProfile()}>
-              <button
-                className="bg-red-600 text-white py-2 px-3 rounded-xl mb-6 hover:bg-slate-300 hover:text-black hover:border hover:border-gray-300 mt-5"
-                type="button">
-                Delete Account
-              </button>
-            </Alert>
-          </div>
-        </form>
+                  onAction={() => handleDeleteProfile()}>
+                  <Button variant="destructive">Delete Account</Button>
+                </Alert>
+              </div>
+            </div>
+          </form>
+        </Form>
       </div>
     </Layout>
   );

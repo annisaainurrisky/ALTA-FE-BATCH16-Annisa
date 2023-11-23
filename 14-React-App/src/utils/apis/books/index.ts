@@ -1,6 +1,6 @@
-import { getBooks, getDetailBooks } from "./api";
+import { getBooks, getDetailBooks, deleteBooks, updateBooks } from "./api";
 import { booksSampleData } from "./sample-data";
-import { Book } from "./types";
+import { Book, BookPayload } from "./types";
 
-export { getBooks, getDetailBooks, booksSampleData };
-export type { Book };
+export { getBooks, getDetailBooks, booksSampleData, deleteBooks, updateBooks };
+export type { Book, BookPayload };

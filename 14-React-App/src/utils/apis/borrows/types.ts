@@ -2,7 +2,7 @@ import * as z from "zod";
 
 export const borrowSchema = z.object({
   bookId: z.number({ required_error: "Book ID is required" }).array(),
-  borrow_date: z.date({
+  borrow_date: z.string({
     required_error: "Borrow date is required",
   }),
 });

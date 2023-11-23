@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import Layout from "@/components/layout";
 import Bookcard from "@/components/book-card";
@@ -17,7 +18,6 @@ const Index = () => {
     try {
       const result = await getBooks();
       setBooks(result.payload.datas);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",

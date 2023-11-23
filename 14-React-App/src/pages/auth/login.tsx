@@ -44,8 +44,8 @@ const login = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="relative flex flex-col m-6 space-y-8 bg-white dark:bg-black dark:text-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
         <div className="flex flex-col justify-center p-8 md:p-14">
           <h1 className="font-bold text-2xl text-center mb-5">Welcome Back!</h1>
           <Form {...form}>
@@ -97,7 +97,7 @@ const login = () => {
           <div className="text-center text-gray-400">
             <p>
               Dont' have an account?{" "}
-              <span className="font-bold text-black">
+              <span className="font-bold text-black dark:text-white">
                 <Link to={"/register"}>Register for free</Link>
               </span>
             </p>

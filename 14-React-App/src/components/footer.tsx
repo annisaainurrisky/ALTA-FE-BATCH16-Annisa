@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="w-full min-h-[30vh] bg-white dark:bg-black">
       <div className="flex flex-col items-center container p-6 h-full gap-2">
         <p className="text-2xl font-bold">Library App</p>
-        <p className="text-slate-500">LibraryApp is a social media-based digital library application equipped with an eReader for reading ebooks.</p>
+        <p className="text-slate-500 ">LibraryApp is a social media-based digital library application equipped with an eReader for reading ebooks.</p>
         <div className="flex flex-row gap-2">
           <img src={facebook} alt="facebook" className='w-10' />
           <img src={google} alt="google" className='w-10'/>

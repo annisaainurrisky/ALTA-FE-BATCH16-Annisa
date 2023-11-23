@@ -49,8 +49,8 @@ const register = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl dark:bg-black dark:text-white rounded-2xl md:flex-row md:space-y-0">
         <div className="flex flex-col justify-center p-8 md:p-16">
           <h1 className="font-bold text-2xl text-center mb-5">Register</h1>
           <Form {...form}>
@@ -156,7 +156,7 @@ const register = () => {
           <div className="text-center text-gray-400">
             <p>
               Already have an account?{" "}
-              <span className="font-bold text-black">
+              <span className="font-bold text-black dark:text-white">
                 <Link to={"/login"}>Login here</Link>
               </span>
             </p>

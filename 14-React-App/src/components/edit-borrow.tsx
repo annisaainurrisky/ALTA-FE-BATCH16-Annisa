@@ -5,7 +5,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect } from "react";
-
+import { LucideEdit } from "lucide-react";
 
 import { BorrowPayload, borrowPayload } from "@/utils/apis/borrows/types";
 
@@ -18,17 +18,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { CustomFormDatePicker } from "./custom-formdatepicker";
-import edit from "../assets/edit.svg";
 
 type EditBorrowProps = {
-  borrow_date?: any;
-  due_date?: any;
-  return_date?: any;
-  handleEditBorrow?: any;
+  borrow_date: Date;
+  due_date: Date;
+  return_date: Date;
+  id_borrow: number;
+  handleEditBorrow: (body: BorrowPayload) => void;
 };
 
-const EditBorrow = (props: BorrowPayload) => {
-  const { borrow_date, due_date, return_date } = props;
+const EditBorrow = (props: EditBorrowProps) => {
+  const { borrow_date, due_date, return_date, handleEditBorrow } =
+    props;
 
   const form = useForm<BorrowPayload>({
     resolver: zodResolver(borrowPayload),
@@ -39,25 +40,26 @@ const EditBorrow = (props: BorrowPayload) => {
     },
   });
 
- 
-
   useEffect(() => {
     form.setValue("borrow_date", new Date(borrow_date));
     form.setValue("due_date", new Date(due_date));
   }, []);
 
+
   return (
-    <div className="bg-white">
+    <div>
       <Dialog>
         <DialogTrigger>
-          <img src={edit} alt="edit icon" />
+          <LucideEdit />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="mb-3">Edit Borrow</DialogTitle>
             <DialogDescription>
               <Form {...form}>
-                <form className="flex flex-col gap-5">
+                <form
+                  className="flex flex-col gap-5"
+                  onSubmit={form.handleSubmit(handleEditBorrow)}>
                   <CustomFormDatePicker
                     control={form.control}
                     name="borrow_date"
@@ -100,11 +102,7 @@ const EditBorrow = (props: BorrowPayload) => {
                       />
                     )}
                   </CustomFormDatePicker>
-                  <Button
-                    className="w-[130px] ms-[330px]"
-                    onClick={() => handleEditBorrow()}>
-                    Save changes
-                  </Button>
+                  <Button type= "submit" className="w-[130px] ms-[330px]">Save changes</Button>
                 </form>
               </Form>
             </DialogDescription>

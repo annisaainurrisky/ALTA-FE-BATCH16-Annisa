@@ -12,6 +12,7 @@ const ProtectedRoutes = () => {
     "/edit-profile",
     "/history-borrow",
     "/dashboard",
+    "/cart"
   ];
   const roleprotected = ["/dashboard"];
 

@@ -5,9 +5,8 @@ import {
   borrowPayload,
   Borrow,
 } from "./types";
-import editBorrow from "@/components/edit-borrow";
-import { deleteBorrow } from "./api";
+import { deleteBorrow, editBorrowService, getBorrow, createBorrow } from "./api";
 
-export { borrowPayload, borrowSchema, editBorrow, deleteBorrow };
+export { borrowPayload, borrowSchema, editBorrowService, deleteBorrow, getBorrow, createBorrow };
 export type { BorrowPayload, BorrowSchema, Borrow };
 

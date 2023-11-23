@@ -10,6 +10,7 @@ import ProfilePage from "@/pages/profile";
 import EditProfilePage from "@/pages/profile/edit-profile";
 import BorrowHistoryPage from "@/pages/profile/history-borrow";
 import Dashboard from "@/pages/admin";
+import Cart from "@/pages/books/cart";
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -47,6 +48,10 @@ export default function Router() {
         {
           path: "/dashboard",
           element: <Dashboard />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
         },
         {
           path: "*",

@@ -12,37 +12,28 @@ import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/utils/utils";
 import EditBorrow from "@/components/edit-borrow";
 import Alert from "@/components/alert";
-import deleteIcon from "../assets/delete.svg";
-import { FormEvent, useState } from "react";
-import { BorrowPayload, editBorrow, deleteBorrow } from "@/utils/apis/borrows";
-import { Borrow } from "@/utils/apis/borrows";
+import { Borrow, deleteBorrow, editBorrowService } from "@/utils/apis/borrows";
+import { Trash2Icon } from "lucide-react";
 
 type tableBorrowProps = {
-  history: any;
+  borrow: Borrow[];
 };
 
 const TableBorrow = (props: tableBorrowProps) => {
-  const { history } = props;
+  const { borrow } = props;
   const { toast } = useToast();
 
-  const [borrow, setBorrow] = useState<Partial<Borrow>>({
-    due_date: new Date(),
-    borrow_date: new Date(),
-    return_date: new Date(),
-  });
-
-  async function handleUpdateBorrow(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleUpdateBorrow(d: any, id_borrow: number) {
     const body = {
-      borrow_date: borrow?.borrow_date,
-      due_date: borrow?.due_date,
-      return_date: borrow?.return_date,
+      borrow_date: d?.borrow_date,
+      due_date: d?.due_date,
+      return_date: d?.return_date,
     };
 
     try {
-      const result = await editBorrow(body);
+      const result = await editBorrowService(body, id_borrow);
       toast({
-        description: result,
+        description: result.message,
       });
     } catch (error: any) {
       toast({
@@ -53,9 +44,9 @@ const TableBorrow = (props: tableBorrowProps) => {
     }
   }
 
-  async function handleDeleteBorrow() {
+  async function handleDeleteBorrow(id_borrow: string) {
     try {
-      const result = await deleteBorrow();
+      const result = await deleteBorrow(id_borrow);
       toast({
         description: result.message,
       });
@@ -82,19 +73,21 @@ const TableBorrow = (props: tableBorrowProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {history.map((history: any) => (
-          <TableRow>
-            <TableCell>{history?.id}</TableCell>
-            <TableCell>{history?.user.full_name}</TableCell>
-            <TableCell>{history?.book.title}</TableCell>
-            <TableCell>{formatDate(history?.borrow_date)}</TableCell>
-            <TableCell>{formatDate(history?.due_date)}</TableCell>
-            <TableCell>{history?.return_date}</TableCell>
+        {borrow.map((borrow) => (
+          <TableRow key={borrow.id}>
+            <TableCell>{borrow.id}</TableCell>
+            <TableCell>{borrow.user.full_name}</TableCell>
+            <TableCell>{borrow.book.title}</TableCell>
+            <TableCell>{formatDate(borrow.borrow_date)}</TableCell>
+            <TableCell>{formatDate(borrow.due_date)}</TableCell>
+            <TableCell>{formatDate(borrow.return_date)}</TableCell>
             <TableCell>
               <EditBorrow
-                due_date={history.due_date}
-                borrow_date={history.borrow_date}
-                handleEditBorrow={handleUpdateBorrow()}
+                due_date={borrow.due_date}
+                borrow_date={borrow.borrow_date}
+                return_date={borrow.return_date}
+                id_borrow={borrow.id}
+                handleEditBorrow={(body) => handleUpdateBorrow(body, borrow.id)}
               />
             </TableCell>
             <TableCell>
@@ -102,8 +95,8 @@ const TableBorrow = (props: tableBorrowProps) => {
                 title="Are you absolutely sure?"
                 description=" This action cannot be undone. This will permanently delete the borrow data
 and remove your data from our servers."
-                onAction={() => handleDeleteBorrow()}>
-                <img src={deleteIcon} alt="delete icon" />
+                onAction={() => handleDeleteBorrow(borrow.id.toString())}>
+                <Trash2Icon />
               </Alert>
             </TableCell>
           </TableRow>
@@ -114,4 +107,3 @@ and remove your data from our servers."
 };
 
 export default TableBorrow;
-//

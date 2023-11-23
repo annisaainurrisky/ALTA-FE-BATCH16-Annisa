@@ -1,5 +1,5 @@
 import { getProfile, updateProfile, deleteProfile } from "./api";
-import { Profile, ProfilePayload } from "./types";
+import { Profile, ProfilePayload, ProfileUpdateType, profileUpdateSchema } from "./types";
 
-export { getProfile, updateProfile, deleteProfile };
-export type { Profile, ProfilePayload };
+export { getProfile, updateProfile, deleteProfile, profileUpdateSchema };
+export type { Profile, ProfilePayload, ProfileUpdateType };

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ReactNode } from "react";
 import {
   Control,
   ControllerRenderProps,
@@ -15,7 +16,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ReactNode } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Props<T extends FieldValues> {
   name: FieldPath<T>;
@@ -43,6 +52,43 @@ export function CustomFormField<T extends FieldValues>(
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>{children(field)}</FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+}
+
+export function CustomFormSelect<T extends FieldValues>(
+  props: Readonly<ChildrenProps<T>>
+) {
+  const { name, label, description, control, placeholder, options } = props;
+
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{label}</FormLabel>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>{label}</SelectLabel>
+                {options?.map((option) => (
+                  <SelectItem value={option} key={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>

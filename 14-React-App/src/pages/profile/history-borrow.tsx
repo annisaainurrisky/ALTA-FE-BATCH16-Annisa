@@ -1,36 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useState, useEffect } from "react";
 import Layout from "@/components/layout";
-
-import { getHistory } from "@/utils/apis/history/api";
-import { History } from "@/utils/apis/history";
-import { formatDate } from "@/utils/utils";
-
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import Bookcard from "@/components/book-card";
+import { Book } from "@/utils/apis/books";
+import { useToast } from "@/components/ui/use-toast";
+import { getBooksBorrow } from "@/utils/apis/books/api";
 
 const BorrowHistory = () => {
   const { toast } = useToast();
 
-  const [history, setHistory] = useState<History[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
-    historyBorrow();
+    fetchData();
   }, []);
 
-  async function historyBorrow() {
+  async function fetchData() {
     try {
-      const result = await getHistory();
-      setHistory(result.payload.datas);
-      console.log(result);
+      const result = await getBooksBorrow();
+      setBooks(result.payload.datas);
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",
@@ -39,34 +27,16 @@ const BorrowHistory = () => {
       });
     }
   }
-
   return (
     <Layout>
-      <Table>
-        <TableCaption>A list of your borrowed books.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">No</TableHead>
-            <TableHead>User</TableHead>
-            <TableHead>Book</TableHead>
-            <TableHead>Borrow Date</TableHead>
-            <TableHead>Due Date</TableHead>
-            <TableHead>Return date</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {history.map((history) => (
-            <TableRow>
-              <TableCell>{history?.id}</TableCell>
-              <TableCell>{history?.user.full_name}</TableCell>
-              <TableCell>{history?.book.title}</TableCell>
-              <TableCell>{formatDate(history?.borrow_date)}</TableCell>
-              <TableCell>{formatDate(history?.due_date)}</TableCell>
-              <TableCell>{history?.return_date}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <div>
+        <p className="font-bold text-xl mb-2">Your History</p>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
+        {books.map((book) => (
+          <Bookcard key={book.id} data={book} />
+        ))}
+      </div>
     </Layout>
   );
 };
