@@ -88,7 +88,7 @@ const EditProfile = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleUpdateProfile)}
-            className="flex flex-col gap-5 w-[600px] justify-center mx-auto">
+            className="flex flex-col gap-5 w-[300px] md:w-[600px] justify-center mx-auto">
             <div className="">
               <CustomFormField
                 control={form.control}

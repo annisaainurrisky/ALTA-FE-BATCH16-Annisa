@@ -1,5 +1,5 @@
 # Link Deployment
-https://library-gbf0iqkr2-annisa-ainur-riskys-projects.vercel.app/
+library-app-smoky.vercel.app
 
 
 # React + TypeScript + Vite

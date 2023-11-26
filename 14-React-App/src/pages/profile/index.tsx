@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Layout from "@/components/layout";
 import { useToast } from "@/components/ui/use-toast";
 import { Profile, getProfile } from "@/utils/apis/users";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const { toast } = useToast();
@@ -39,7 +39,6 @@ const Index = () => {
         <p className="font-bold text-xl md:text-2xl lg:text-3xl mb-5">
           Hi, {profile?.full_name}
         </p>
-        <Separator />
         <div className="flex flex-row gap-20">
           <div className="flex flex-col gap-5">
             <p>Name</p>
@@ -54,9 +53,9 @@ const Index = () => {
             <p>{profile?.phone_number}</p>
           </div>
         </div>
-        <button className="bg-black text-white rounded-xl py-2 px-[138px] hover:bg-slate-300 hover:text-black hover:border hover:border-gray-300 ">
+        <Button>
           <Link to="/edit-profile">Edit Profile</Link>
-        </button>
+        </Button>
       </div>
     </Layout>
   );
