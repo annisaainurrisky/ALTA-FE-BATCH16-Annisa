@@ -1,31 +1,60 @@
-# Link Deployment
-https://library-app-smoky.vercel.app/
+
+# Welcome to LibraLink
 
 
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## 🔍 About Us
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+An innovative library application, delivers library of books enriched with detailed information. Users enjoy a seamless borrowing process, while administrators can organize and manage library content, from adding new books to changing return dates. Technology stacks used for this project: TypeScript, React JS, Tailwind CSS, Zustand, and Context.
 
-- Configure the top-level `parserOptions` property like this:
+## 🚀 Deployment
+- [Vercel](https://library-app-smoky.vercel.app/)
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+
+## 🪶 Features
+
+🤴 As User
+
+- View books
+- Borrow book
+
+👨‍💻 As Admin
+- Add a new book
+- Update book
+- Delete book
+- Update borrowed book
+- Delete borrowed book 
+
+
+## Installation
+
+Clone this project
+
+```bash
+  git clone https://github.com/annisaainurrisky/ALTA-FE-BATCH16-Annisa.git
+  cd 14-React-App
+```
+### Install
+```bash
+  npm install
+```
+### Usage
+```bash
+  npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## 🛠 Built With
+ - [React Typescript](https://www.typescriptlang.org/id/docs/handbook/react.html)
+ - [TailwindCSS](https://tailwindcss.com/)
+ - [Axios](https://axios-http.com/docs/intro)
+ - [React Router](https://reactrouter.com/en/main)
+ - [React Hook Form](https://react-hook-form.com/)
+ - [Zod](https://www.npmjs.com/package/zod)
+ - [Hook Form Resolver](https://www.npmjs.com/package/@hookform/resolvers)
+ - [Shadcn](https://ui.shadcn.com/)
+ - [Zustand](https://github.com/pmndrs/zustand)
+
+
